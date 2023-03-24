@@ -12,7 +12,7 @@ export default function AlertBox({
     <span className={styles.alertBox}>
       <p>
         De {cidadePartida.toUpperCase()} para {cidadeDestino.toUpperCase()},
-        utilizando um caminhão de {modalidade.toLowerCase()} porte, a distância é de {distancia}Km e o custo será de R$ {custoTotal.toFixed(2)}
+        utilizando um caminhão de {modalidade.toLowerCase()}, a distância é de {distancia}Km e o custo será de R$ {custoTotal.toFixed(2)}
       </p>
     </span>
   );
