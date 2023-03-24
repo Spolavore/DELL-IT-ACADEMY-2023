@@ -76,6 +76,8 @@ export default function App() {
 
       // Se não avisa para o usuário qual das cidades informadas possui erro ou se nenhuma modalidade foi selecionada
     } else {
+      // remove o outPut para nao confundir o usuário com uma resposta anterior
+      setOutput(<></>)
       if (!verificaPartida) {
         alert(
           `A cidade ${cidadePartida} não existe ou não condiz com a norma, tente novamente`
@@ -90,22 +92,32 @@ export default function App() {
     }
   }
 
+
+  // Funcao que calcula o preco total, pegando no arquivo distanciaCidades 
   function Calculate(dista) {
     let taxaPorKm;
 
+    // para cada "tabela" contida no arquivo distanciaCidades ele vai verificar qual
+    // tabela possui a cidade de partida e com ela verificar qual a distancia rodoviria
+    // até cidade de destino 
     distanceData.map((data) => {
       if (data[`${cidadePartida.toUpperCase()}`] === 0) {
         distanciaRodoviaria = data[`${cidadeDestino.toUpperCase()}`];
 
-        if (modalidade === tiposDeCaminhao[0]) {
+    // Avalia qual vai ser a taxa aplicada para a modalidade específicada 
+    // pelo usuário
+        if (modalidade == tiposDeCaminhao[0]) {
           taxaPorKm = 4.87;
-        } else if (modalidade === tiposDeCaminhao[1]) {
+        } else if (modalidade == tiposDeCaminhao[1]) {
           taxaPorKm = 11.92;
         } else {
           taxaPorKm = 27.44;
         }
 
+        // Calcula o custo total pegando a distanciaRodoviaria e multiplicando pela taxa
         custoTotal = distanciaRodoviaria * taxaPorKm;
+
+        // Seta o outPut para que ele seja colocado na tela ao sair da funcao.
         setOutput(
           <AlertBox
             distancia = {distanciaRodoviaria}
@@ -150,9 +162,9 @@ export default function App() {
           onChange={(e) => setModalidade(e.target.value)}
         >
           <option value={""}></option>
-          <option value={"pequeno"}>{tiposDeCaminhao[0]}</option>
-          <option value={"medio"}>{tiposDeCaminhao[1]}</option>
-          <option value={"grande"}>{tiposDeCaminhao[2]}</option>
+          <option value={"Porte Pequeno"}>{tiposDeCaminhao[0]}</option>
+          <option value={"Porte Médio"}>{tiposDeCaminhao[1]}</option>
+          <option value={"Porte Grande"}>{tiposDeCaminhao[2]}</option>
         </select>
 
         <button className={styles.buttonSubmit} onClick={VerifyData}>
