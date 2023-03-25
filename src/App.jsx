@@ -1,6 +1,7 @@
 import styles from "./styles.module.css";
 import { useState } from "react";
 import AlertBox from "./AlertBox";
+import { Link } from "react-router-dom";
 
 export default function App() {
   //Lista de cidades aceitas
@@ -144,20 +145,25 @@ export default function App() {
         <label for="cidade_ini">Indique o cidade de partida</label>
         <input
           name="cidade_ini"
+          id="cidade_ini"
           required
+          type={'text'}
           onChange={(e) => setCidadePartida(e.target.value)}
         />
 
         <label for="cidade_des">Indique o cidade de destino</label>
         <input
           name="cidade_des"
+          id="cidade_des"
           required
+          type={'text'}
           onChange={(e) => setCidadeDestiono(e.target.value)}
         />
 
         <label for="modalidade">Selecione a Modalidade</label>
         <select
           name="modalidade"
+          id="modalidade"
           required
           onChange={(e) => setModalidade(e.target.value)}
         >
@@ -166,11 +172,15 @@ export default function App() {
           <option value={"Porte Médio"}>{tiposDeCaminhao[1]}</option>
           <option value={"Porte Grande"}>{tiposDeCaminhao[2]}</option>
         </select>
+        <div style={{display: "flex", flexDirection: "row", gap: "30px"}}>
+          <button className={styles.buttonSubmit} onClick={VerifyData}>
+            Calcular
+          </button>
 
-        <button className={styles.buttonSubmit} onClick={VerifyData}>
-          Calcular
-        </button>
-
+    
+            <Link className={styles.link} to="/itens"> Opções  </Link>
+         
+        </div>
         {/* output apos calcular todos os dados, se e somente se , os dados são válidos */}
         {output}
       </div>
