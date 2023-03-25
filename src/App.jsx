@@ -177,8 +177,7 @@ export default function App() {
             Calcular
           </button>
 
-    
-            <Link className={styles.link} to="/itens"> Opções  </Link>
+            <Link className={styles.link} to="/opcoes"> Opções  </Link>
          
         </div>
         {/* output apos calcular todos os dados, se e somente se , os dados são válidos */}

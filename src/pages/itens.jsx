@@ -5,7 +5,7 @@ export default function Itens() {
     <>
       <div className={styles.container}>
         <h2>Escreva a quantidade de itens a ser transportados</h2>
-        <span>*Caso não desejar transportar o item digite 0 </span>
+        <span>*Caso não desejar transportar o item deixe o campo em branco </span>
 
         <div className={styles.dataList}>
           <div
