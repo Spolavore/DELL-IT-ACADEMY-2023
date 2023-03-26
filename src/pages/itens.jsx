@@ -82,7 +82,7 @@ export default function Itens() {
   // Precos de cada caminhano porte pequeno posicao 0 porte medio posicao 1 etc
   // -> caso queiramos mudar os precos futuramente basta mudar aqui, sem se preocupar
   // com todas as ocorrencias
-  let precos = [4.87, 11.92, 27, 44];
+  let precos = [4.87, 11.92, 27.44];
 
   function VerifyInputs() {
     // variavel que contem o valor de todos dos itens passados por input
