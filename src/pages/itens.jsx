@@ -171,6 +171,7 @@ export default function Itens() {
     CalculateDistance();
     DeterminateBestOption();
     CalculateTaxes();
+   
     setOutput(
       <InfoBox
         cidade_inicial = {cidade_inicial.toUpperCase()}
@@ -180,7 +181,7 @@ export default function Itens() {
         quantidadeDeProdutos = {listaProdutos}
         caminhoesPequenos = {qntPortePequeno}
         caminhoesMedios = {qntPorteMedio}
-        caminhoesGrande = {qntPorteGrande}
+        caminhoesGrandes = {qntPorteGrande}
         custoTotal = {custoTotal}
         custoIniParada = {custoIniParada}
         custoParadaDestino = {custoParadaDestino}
@@ -228,21 +229,27 @@ export default function Itens() {
     let pesoTotalAux;
     pesoTotalAux = pesoTotal;
 
+   
     // Algoritmo que checa a melhor opção de categoria
     // e quantos irão ser necessários
     while (pesoTotalAux > 0) {
       if (pesoTotalAux / 10000 > 1) {
+   
         pesoTotalAux -= 10000;
         qntPorteGrande += 1;
       } else if (pesoTotalAux / 4000 > 1) {
+      
+        
         pesoTotalAux -= 4000;
         qntPorteMedio += 1;
       } else {
+       
+
         pesoTotalAux -= 1000;
         qntPortePequeno += 1;
       }
     }
-    console.log(pesoTotal);
+   
   }
 
   // Função responsável por determinar o custo total, e o custo parcial entre trechos

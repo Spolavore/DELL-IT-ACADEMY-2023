@@ -6,7 +6,6 @@ export default function InfoBox({
   cidade_parada,
   cidade_dest,
   distanciaTotal,
-  listaProdutos,
   quantidadeDeProdutos,
   caminhoesPequenos,
   caminhoesMedios,
@@ -54,11 +53,15 @@ export default function InfoBox({
   
   // trecho de código que irá colocar na lista acima os caminhões calculados pela função
   // DetermineBestOption .
+
+
   if (caminhoesPequenos !== 0) {
     portesCaminhao.push(`${caminhoesPequenos} caminhão(ões) de porte PEQUENO`);
-  } else if (caminhoesMedios !== 0) {
+  } 
+  if (caminhoesMedios !== 0) {
     portesCaminhao.push(`${caminhoesMedios} caminhão(ões) de porte MÉDIO`);
-  } else if (caminhoesGrandes !== 0) {
+  }
+  if (caminhoesGrandes !== 0) {
     portesCaminhao.push(`${caminhoesGrandes} caminhão(ões) de porte GRANDE`);
   }
   
