@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 import { useState } from "react";
-import AlertBox from "./AlertBox";
+import AlertBox from "./components/alertBox/AlertBox.jsx";
 import { Link } from "react-router-dom";
 
 
@@ -128,7 +128,7 @@ export default function App() {
             distancia = {distanciaRodoviaria}
             cidadePartida = {cidadePartida}
             cidadeDestino = {cidadeDestino}
-            custoTotal = {custoTotal.toFixed(3)}
+            custoTotal = {custoTotal}
             modalidade = {modalidade}
           />
         );

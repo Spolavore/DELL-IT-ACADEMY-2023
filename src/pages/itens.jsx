@@ -59,10 +59,18 @@ export default function Itens() {
   let distanciaPDest;   // distancia da parada ate o destino
   let distanciaTotal;   // distancia total percorrida
 
-  // Variavel que contem qual o melhor porte para levar as cargas
-  let caminhao;
+  // Variaveis que contem a quantidade necessaria de cada categoria
+  // para o menor custo possível.
+  let qntPortePequeno;
+  let qntPorteMedio;
+  let qntPorteGrande;
+
   // Variavel referente ao custo total da viagem
+
   let custoTotal = 0; 
+  let custoIniParada = 0;
+  let custoParadaDestino = 0;
+
   // Precos de cada caminhano porte pequeno posicao 0 porte medio posicao 1 etc
   let precos = [4.87, 11.92, 27,44];
 
@@ -126,11 +134,11 @@ export default function Itens() {
     }
     else if (!cidadesPossiveis.includes(cidade_dest.toUpperCase())) {
       alert("Cidade de destino não existe ou não condiz com a norma");
-    } else if(cidade_parada == cidade_dest || cidade_parada == cidade_inicial){
+    } else if(cidade_parada === cidade_dest || cidade_parada === cidade_inicial){
       alert("Não pode repetir cidades em campos diferentes");
     }
     else {
-      MaxWeight(pesoItens);
+      MaxWeight(pesoItens, quantidadeItens);
       Calculate();
     }
   }
@@ -138,6 +146,7 @@ export default function Itens() {
   function Calculate() {
     CalculateDistance();
     DeterminateBestOption();
+    CalculateTaxes();
   }
 
 
@@ -146,7 +155,7 @@ export default function Itens() {
   function CalculateDistance(){
 
     // caso onde há cidade_de_parada
-    if(cidade_parada != ""){
+    if(cidade_parada !== ""){
       dados.map((info) => {
         // pega a distancia da cidade de partida ate a cidade de parada
         if(info[`${cidade_inicial.toUpperCase()}`] === 0){
@@ -163,7 +172,7 @@ export default function Itens() {
     }
 
     // caso onde não há cidade_de_parada
-    if(cidade_parada == "") {
+    if(cidade_parada === "") {
       dados.map((info) => {
         // pega a distancia da cidade de partida ate a cidade de destino (essa eh a distancia total)
         if(info[`${cidade_inicial.toUpperCase()}`] === 0){
@@ -175,17 +184,57 @@ export default function Itens() {
   // Função responsável por determinar a melhor opção de porte de caminhão
   // tal como quantos caminhoes serão necessários
   function DeterminateBestOption(){
- 
+    qntPortePequeno = 0;
+    qntPorteMedio = 0;
+    qntPorteGrande = 0;
+    
+    let pesoTotalAux;
+    pesoTotalAux = pesoTotal;
+    
+    // Algoritmo que checa a melhor opção de categoria 
+    // e quantos irão ser necessários
+    while(pesoTotalAux > 0) {
+      if((pesoTotalAux / 10000 ) > 1){
+        pesoTotalAux -= 10000;
+        qntPorteGrande += 1;
+      } else if((pesoTotalAux / 4000) > 1) {
+        pesoTotalAux -= 4000;
+        qntPorteMedio += 1;
+      } else {
+        pesoTotalAux -= 1000;
+        qntPortePequeno += 1;
+      }
+    }
+    console.log(pesoTotal);
+  }
+
+  // Função responsável por determinar o custo total, e o custo parcial entre trechos
+  function CalculateTaxes(){
+    let precosPorCaminhao = qntPortePequeno * precos[0] + qntPorteMedio * precos[1] + qntPorteGrande * precos[2];
+    custoTotal = (precosPorCaminhao * distanciaTotal).toFixed(2);
+    
+    // Parte para calcular entre os trechos
+    if(cidade_parada !== ""){
+      custoIniParada = (precosPorCaminhao * distanciaIniP).toFixed(2);
+      custoParadaDestino = (precosPorCaminhao * distanciaPDest).toFixed(2);
+    }
   }
 
   // Função que recebe uma lista com todos os peso dos itens selecionados
-  // e seta o pesoTotal (soma de todos os pesos) na variavel acima declarada
-  function MaxWeight(weightList){
+  // e seta o pesoTotal (soma de todos os pesos) * qntDeCada1 na variavel acima declarada
+  function MaxWeight(weightList, itensList){
     let i;
     pesoTotal = 0 ;
-     for ( i in weightList){
-      pesoTotal += parseFloat(weightList[i])
-    }    
+    
+    itensList.map( (item, index) => {
+      pesoTotal += parseFloat(item) * parseFloat(weightList[index]);
+    } )
+    
+    // utilizamos o math.ceil para arredondar para cima o peso quando houver
+    // casas decimais, isso é necessário para garantir que todos os itens serão
+    // carregados.
+    pesoTotal = Math.ceil(pesoTotal);
+    
 
   }
   // Função responável por verificar se há algum valor negativo passado

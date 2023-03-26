@@ -1,5 +1,6 @@
 // Componente resposável por botar na tela as informações de output respondidas pelo usuário,
-// calculadas pela funcao Calculate e passadas como parametro para este componente.
+// calculadas pela funcao Calculate e passadas como parametro para este componente. (somente da )
+// funcionalidade 1.
 import styles from "./alert.module.css";
 export default function AlertBox({
   distancia,
