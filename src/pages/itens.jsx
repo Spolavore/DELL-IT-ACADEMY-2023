@@ -1,9 +1,10 @@
 import styles from "./itens.module.css";
 import { Link } from "react-router-dom";
-
 import { useState } from "react";
+import InfoBox from "../components/infoBox/InfoBox";
+
 export default function Itens() {
-  const dados = require('../distanciaCidades.json');
+  const dados = require("../distanciaCidades.json");
   const cidadesPossiveis = [
     "ARACAJU",
     "BELEM",
@@ -48,16 +49,24 @@ export default function Itens() {
   let [luminariaPeso, setLuminariaPeso] = useState("");
   let [lavadoraPeso, setLavadoraPeso] = useState("");
 
+  // Variavel que vai conter o valor numero de todos os produtos
+  // eh setada apos a verificacao
+  let listaProdutos = [];
+
   // Variaveis e useStates referentes as cidades do percurso total
   let [cidade_inicial, setCidadeInicial] = useState("");
   let [cidade_parada, setCidadeParada] = useState("");
   let [cidade_dest, setCidadeDest] = useState("");
   let pesoTotal = 0;
 
+  // Variavel e useState referente ao outPut, quando tudo for calculado
+  // ele ira ser setado
+  let [outPut, setOutput] = useState(<></>);
+
   // Variaveis referente as distancias entre as cidades
-  let distanciaIniP;    // distancia do inicio ate a parda
-  let distanciaPDest;   // distancia da parada ate o destino
-  let distanciaTotal;   // distancia total percorrida
+  let distanciaIniP; // distancia do inicio ate a parda
+  let distanciaPDest; // distancia da parada ate o destino
+  let distanciaTotal; // distancia total percorrida
 
   // Variaveis que contem a quantidade necessaria de cada categoria
   // para o menor custo possível.
@@ -66,19 +75,14 @@ export default function Itens() {
   let qntPorteGrande;
 
   // Variavel referente ao custo total da viagem
-
-  let custoTotal = 0; 
+  let custoTotal = 0;
   let custoIniParada = 0;
   let custoParadaDestino = 0;
 
   // Precos de cada caminhano porte pequeno posicao 0 porte medio posicao 1 etc
-  let precos = [4.87, 11.92, 27,44];
-
-  // Variaveis referentes ao preco de cada trecho e o custo total
-  let precoIniParada
-  let precoParadaDest
-  let precoTotal
-
+  // -> caso queiramos mudar os precos futuramente basta mudar aqui, sem se preocupar
+  // com todas as ocorrencias
+  let precos = [4.87, 11.92, 27, 44];
 
   function VerifyInputs() {
     // variavel que contem o valor de todos dos itens passados por input
@@ -90,6 +94,10 @@ export default function Itens() {
       luminaria,
       lavadora,
     ];
+
+    // seta a lista de produtos
+    listaProdutos = quantidadeItens;
+
     // variavel que contem o peso de todos dos itens passados por input
     const pesoItens = [
       celularPeso,
@@ -97,8 +105,8 @@ export default function Itens() {
       freezerPeso,
       cadeiraPeso,
       luminariaPeso,
-      lavadoraPeso
-    ]
+      lavadoraPeso,
+    ];
 
     // variavel que guarda o resultado da funcao CheckNegativesInputs
     let campoNegativo = CheckNegativesInputs(quantidadeItens);
@@ -106,10 +114,16 @@ export default function Itens() {
 
     // verifica se não há nenhum campo nulo
     if (quantidadeItens.includes("")) {
-      alert(`Campo dos itens de número ${quantidadeItens.indexOf("") + 1} é inválido!`);
+      alert(
+        `Campo dos itens de número ${
+          quantidadeItens.indexOf("") + 1
+        } é inválido!`
+      );
       alert("Preencha todos os campos antes de enviar as informações");
-    } else if (pesoItens.includes("")){
-      alert(`Campo dos pesos de número ${pesoItens.indexOf("") + 1} é inválido!`);
+    } else if (pesoItens.includes("")) {
+      alert(
+        `Campo dos pesos de número ${pesoItens.indexOf("") + 1} é inválido!`
+      );
       alert("Preencha todos os campos antes de enviar as informações");
     }
     // verifica se foi passado algum valor negativo, se campoNegativo >= 0 significa q a função retornou
@@ -117,87 +131,109 @@ export default function Itens() {
     // temos que somar + 1 pois o array começa na posição 0, então o 0 representa o 1 item o 1 o segundo item e etc
     else if (campoNegativo >= 0) {
       alert(
-        `Campo negativos não serão aceitos, revise o campo dos itens de número ${campoNegativo + 1}`
+        `Campo negativos não serão aceitos, revise o campo dos itens de número ${
+          campoNegativo + 1
+        }`
       );
     } else if (campoNegativoPeso >= 0) {
       alert(
-        `Campo negativos não serão aceitos, revise o campo dos pesos de número ${campoNegativoPeso + 1}`
+        `Campo negativos não serão aceitos, revise o campo dos pesos de número ${
+          campoNegativoPeso + 1
+        }`
       );
     }
     // Parte da verificação das cidades passadas, se elas estão contidas
     // nas cidades permitidas, permitiremos que o usuario não coloque cidade de parada
     else if (!cidadesPossiveis.includes(cidade_inicial.toUpperCase())) {
       alert("Cidade de partida não existe ou não condiz com a norma");
-    } 
-    else if(!cidadesPossiveis.includes(cidade_parada.toUpperCase()) && cidade_parada != ""){
+    } else if (
+      !cidadesPossiveis.includes(cidade_parada.toUpperCase()) &&
+      cidade_parada != ""
+    ) {
       alert("Cidade de parada não existe ou não condiz com a norma");
-    }
-    else if (!cidadesPossiveis.includes(cidade_dest.toUpperCase())) {
+    } else if (!cidadesPossiveis.includes(cidade_dest.toUpperCase())) {
       alert("Cidade de destino não existe ou não condiz com a norma");
-    } else if(cidade_parada === cidade_dest || cidade_parada === cidade_inicial){
+    } else if (
+      cidade_parada === cidade_dest ||
+      cidade_parada === cidade_inicial
+    ) {
       alert("Não pode repetir cidades em campos diferentes");
-    }
-    else {
+    } else {
       MaxWeight(pesoItens, quantidadeItens);
       Calculate();
     }
   }
 
+  // Função responsável por fazer todos os calculos e após isso setar o output para
+  // ser colocado na tela
   function Calculate() {
     CalculateDistance();
     DeterminateBestOption();
     CalculateTaxes();
+    setOutput(
+      <InfoBox
+        cidade_inicial = {cidade_inicial.toUpperCase()}
+        cidade_parada = {cidade_parada.toUpperCase()}
+        cidade_dest = {cidade_dest.toUpperCase()}
+        distanciaTotal = {distanciaTotal}
+        quantidadeDeProdutos = {listaProdutos}
+        caminhoesPequenos = {qntPortePequeno}
+        caminhoesMedios = {qntPorteMedio}
+        caminhoesGrande = {qntPorteGrande}
+        custoTotal = {custoTotal}
+        custoIniParada = {custoIniParada}
+        custoParadaDestino = {custoParadaDestino}
+      />
+    );
   }
-
 
   // Função resposável por calcular as distancias entre as cidades e setar essas
   // distancias nas variaveis declaradas acima.
-  function CalculateDistance(){
-
+  function CalculateDistance() {
     // caso onde há cidade_de_parada
-    if(cidade_parada !== ""){
+    if (cidade_parada !== "") {
       dados.map((info) => {
         // pega a distancia da cidade de partida ate a cidade de parada
-        if(info[`${cidade_inicial.toUpperCase()}`] === 0){
-           distanciaIniP = info[`${cidade_parada.toUpperCase()}`];
+        if (info[`${cidade_inicial.toUpperCase()}`] === 0) {
+          distanciaIniP = info[`${cidade_parada.toUpperCase()}`];
         }
-        // pega a distancia da cidade de parada ate a cidade de destino 
-        if(info[`${cidade_parada.toUpperCase()}`] === 0){
+        // pega a distancia da cidade de parada ate a cidade de destino
+        if (info[`${cidade_parada.toUpperCase()}`] === 0) {
           distanciaPDest = info[`${cidade_dest.toUpperCase()}`];
         }
-      })
+      });
 
       // soma as duas
       distanciaTotal = distanciaIniP + distanciaPDest;
     }
 
     // caso onde não há cidade_de_parada
-    if(cidade_parada === "") {
+    if (cidade_parada === "") {
       dados.map((info) => {
         // pega a distancia da cidade de partida ate a cidade de destino (essa eh a distancia total)
-        if(info[`${cidade_inicial.toUpperCase()}`] === 0){
-           distanciaTotal = info[`${cidade_dest.toUpperCase()}`];
+        if (info[`${cidade_inicial.toUpperCase()}`] === 0) {
+          distanciaTotal = info[`${cidade_dest.toUpperCase()}`];
         }
-    })
+      });
+    }
   }
-}
   // Função responsável por determinar a melhor opção de porte de caminhão
   // tal como quantos caminhoes serão necessários
-  function DeterminateBestOption(){
+  function DeterminateBestOption() {
     qntPortePequeno = 0;
     qntPorteMedio = 0;
     qntPorteGrande = 0;
-    
+
     let pesoTotalAux;
     pesoTotalAux = pesoTotal;
-    
-    // Algoritmo que checa a melhor opção de categoria 
+
+    // Algoritmo que checa a melhor opção de categoria
     // e quantos irão ser necessários
-    while(pesoTotalAux > 0) {
-      if((pesoTotalAux / 10000 ) > 1){
+    while (pesoTotalAux > 0) {
+      if (pesoTotalAux / 10000 > 1) {
         pesoTotalAux -= 10000;
         qntPorteGrande += 1;
-      } else if((pesoTotalAux / 4000) > 1) {
+      } else if (pesoTotalAux / 4000 > 1) {
         pesoTotalAux -= 4000;
         qntPorteMedio += 1;
       } else {
@@ -209,12 +245,15 @@ export default function Itens() {
   }
 
   // Função responsável por determinar o custo total, e o custo parcial entre trechos
-  function CalculateTaxes(){
-    let precosPorCaminhao = qntPortePequeno * precos[0] + qntPorteMedio * precos[1] + qntPorteGrande * precos[2];
-    custoTotal = (precosPorCaminhao * distanciaTotal).toFixed(2);
-    
+  function CalculateTaxes() {
+    let precosPorCaminhao =
+      qntPortePequeno * precos[0] +
+      qntPorteMedio * precos[1] +
+      qntPorteGrande * precos[2];
+      custoTotal = (precosPorCaminhao * distanciaTotal).toFixed(2);
+
     // Parte para calcular entre os trechos
-    if(cidade_parada !== ""){
+    if (cidade_parada !== "") {
       custoIniParada = (precosPorCaminhao * distanciaIniP).toFixed(2);
       custoParadaDestino = (precosPorCaminhao * distanciaPDest).toFixed(2);
     }
@@ -222,20 +261,18 @@ export default function Itens() {
 
   // Função que recebe uma lista com todos os peso dos itens selecionados
   // e seta o pesoTotal (soma de todos os pesos) * qntDeCada1 na variavel acima declarada
-  function MaxWeight(weightList, itensList){
+  function MaxWeight(weightList, itensList) {
     let i;
-    pesoTotal = 0 ;
-    
-    itensList.map( (item, index) => {
+    pesoTotal = 0;
+
+    itensList.map((item, index) => {
       pesoTotal += parseFloat(item) * parseFloat(weightList[index]);
-    } )
-    
+    });
+
     // utilizamos o math.ceil para arredondar para cima o peso quando houver
     // casas decimais, isso é necessário para garantir que todos os itens serão
     // carregados.
     pesoTotal = Math.ceil(pesoTotal);
-    
-
   }
   // Função responável por verificar se há algum valor negativo passado
   // nos inputs, valores negativos não são tolerados.
@@ -250,7 +287,6 @@ export default function Itens() {
     });
     return aux;
   }
-
 
   // Código da Interface em html e obtenção de dados
   return (
@@ -405,6 +441,7 @@ export default function Itens() {
             Voltar
           </Link>
         </div>
+        {outPut}
       </div>
     </>
   );

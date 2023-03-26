@@ -1,0 +1,17 @@
+.container{
+    display: flex;
+    background-color: #1669D9;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 5px;
+    box-shadow: 12px 10px 2px #0d43899a;
+    margin-top: 10%;
+}
+
+.container p {
+    padding: 4%;
+    color: #FFFFFF;
+    font-size: 1.3rem;
+    text-align: justify;
+    line-height: 30px;
+}

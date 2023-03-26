@@ -106,9 +106,8 @@ body{
    
 }
 .link:hover{
-   
+
     transition: all 300ms ease-in;
-    color: #0076FE ;
     background-color: white;
    
 }
