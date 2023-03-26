@@ -131,13 +131,13 @@ export default function Itens() {
     // temos que somar + 1 pois o array começa na posição 0, então o 0 representa o 1 item o 1 o segundo item e etc
     else if (campoNegativo >= 0) {
       alert(
-        `Campo negativos não serão aceitos, revise o campo dos itens de número ${
+        `Campos negativos não serão aceitos, revise o campo dos itens de número ${
           campoNegativo + 1
         }`
       );
     } else if (campoNegativoPeso >= 0) {
       alert(
-        `Campo negativos não serão aceitos, revise o campo dos pesos de número ${
+        `Campos negativos não serão aceitos, revise o campo dos pesos de número ${
           campoNegativoPeso + 1
         }`
       );
@@ -154,8 +154,9 @@ export default function Itens() {
     } else if (!cidadesPossiveis.includes(cidade_dest.toUpperCase())) {
       alert("Cidade de destino não existe ou não condiz com a norma");
     } else if (
-      cidade_parada === cidade_dest ||
-      cidade_parada === cidade_inicial
+      cidade_parada.toUpperCase() === cidade_dest.toUpperCase() ||
+      cidade_parada.toUpperCase() === cidade_inicial.toUpperCase()||
+      cidade_inicial.toUpperCase() === cidade_dest.toUpperCase()
     ) {
       alert("Não pode repetir cidades em campos diferentes");
     } else {

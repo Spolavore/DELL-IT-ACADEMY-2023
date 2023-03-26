@@ -15,10 +15,13 @@ export default function InfoBox({
   custoIniParada,
   custoParadaDestino,
 }) {
+  // valor booleando que irá dizer se a cidade de parada foi preenchida ou não
   let boolean = cidade_parada !== "";
+
   let somaDosProdutos = 0;
   let precoUnitario;
 
+  // Lista de produtos possiveis para escolha
   let produtosEscolhidos = [
     "Celular",
     "Geladeira",
@@ -28,6 +31,8 @@ export default function InfoBox({
     "Lavadora de Roupas",
   ];
 
+  // Código que irá somar todas as quantidade dos itens e irá gerar o preço de custo
+  // unitário médio (custo total / somaDosProdutos)
   let index = 0;
   for (index in quantidadeDeProdutos){
     somaDosProdutos += parseFloat(quantidadeDeProdutos[index]);
@@ -35,15 +40,20 @@ export default function InfoBox({
 
   precoUnitario =  (custoTotal / somaDosProdutos).toFixed(2);
 
-  console.log(precoUnitario);
+  // Trecho de código que irá remover das lista produtosEscolhidos aqueles que não foram
+  // escolhidos pelo usuário, ou seja, que foi passado o valor 0
   while (quantidadeDeProdutos.includes("0")) {
     let itemNulo = produtosEscolhidos[quantidadeDeProdutos.indexOf("0")];
     produtosEscolhidos.splice(produtosEscolhidos.indexOf(itemNulo), 1);
     quantidadeDeProdutos.splice(quantidadeDeProdutos.indexOf("0"), 1);
   }
 
+  // Variável que irá guardar o texto do outPut dos caminhões necessários tal como 
+  // sua quantidade
   let portesCaminhao = [];
-
+  
+  // trecho de código que irá colocar na lista acima os caminhões calculados pela função
+  // DetermineBestOption .
   if (caminhoesPequenos !== 0) {
     portesCaminhao.push(`${caminhoesPequenos} caminhão(ões) de porte PEQUENO`);
   } else if (caminhoesMedios !== 0) {
@@ -51,7 +61,10 @@ export default function InfoBox({
   } else if (caminhoesGrandes !== 0) {
     portesCaminhao.push(`${caminhoesGrandes} caminhão(ões) de porte GRANDE`);
   }
-
+  
+  // So ira mostrar a box com os calculos se houver ao menos 1 item escolhido
+  if (produtosEscolhidos.length !== 0){
+  // Código que irá gerar a interface e irá colocar os dados personalizados passados pela função
   return (
     <>
       <div className={styles.container}>
@@ -71,9 +84,10 @@ export default function InfoBox({
           {cidade_inicial} para{" "}
           {boolean
             ? `${cidade_parada} é de R$ ${custoIniParada} e de ${cidade_parada} para ${cidade_dest} é de R$ ${custoParadaDestino}`
-            : `${cidade_dest} é de ${custoTotal}`}, onde o custo unitário médio é de {precoUnitario}
+            : `${cidade_dest} é de ${custoTotal}`}, onde o custo unitário médio é de {precoUnitario} reais
         </p>
       </div>
     </>
   );
+}   
 }
