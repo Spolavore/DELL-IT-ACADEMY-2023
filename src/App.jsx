@@ -128,7 +128,7 @@ export default function App() {
             distancia = {distanciaRodoviaria}
             cidadePartida = {cidadePartida}
             cidadeDestino = {cidadeDestino}
-            custoTotal = {custoTotal}
+            custoTotal = {custoTotal.toFixed(3)}
             modalidade = {modalidade}
           />
         );
@@ -139,7 +139,7 @@ export default function App() {
   // A parte abaixo é a construção da interface para visualizar melhor o que está acontecendo tal como realizar testes
   // é um html simples que contem uma div principal que irá possuir um título, 3 inputs, sendo que o último deles é do
   // tipo selection - onde o usuário é obrigado a escolher umas das 3 opções e um botão que vai verificar os dados
-  // passados ao ser clicado
+  // passados ao ser clicado. Além do botão de ir para configurações avançadas da aplicação
   // IMPORTANTE: Cada vez que um dos inputs receber uma alteração do usuário ele irá ser atualizado nas variáveis
   // dos useStates inicializados acima
   return (

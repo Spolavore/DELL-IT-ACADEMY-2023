@@ -47,6 +47,14 @@
     margin-left: 20%;
     transition: all 300ms ease-out;
     outline: 1px solid rgb(0, 113, 154);
+    
+}
+
+.inputField::placeholder{
+    opacity: 50%;
+    font-size: 25px;
+ 
+   
 }
 
 
@@ -61,7 +69,10 @@
 .inputField:hover{
     transition: all 300ms ease-in;
     transform: scale(1.04);
+
 }
+
+
 
 
 .inputAlt{
@@ -75,7 +86,7 @@
     transition: all 300ms ease-out;
 }
 
-.inputAlt:hover{
+.inputAlt:hover {
     transition: all 300ms ease-in;
     transform: scale(1.04);
     
