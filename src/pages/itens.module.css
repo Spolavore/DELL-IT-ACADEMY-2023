@@ -53,9 +53,14 @@
 .inputField:focus{
 
     transition: all 300ms ease-in;
-    outline: 2px solid rgb(0, 113, 154);
+    outline: 3px solid rgb(0, 113, 154);
     transform: scale(1.04);
     
+}
+
+.inputField:hover{
+    transition: all 300ms ease-in;
+    transform: scale(1.04);
 }
 
 
@@ -73,12 +78,13 @@
 .inputAlt:hover{
     transition: all 300ms ease-in;
     transform: scale(1.04);
-    outline: 2.5px solid rgb(0, 113, 154);
+    
 }
 
 .inputAlt:focus{
     transition: 100ms;
     outline: 3px solid rgb(1, 98, 134);
+    transform: scale(1.04);
 }
 
 .buttonSubmit{

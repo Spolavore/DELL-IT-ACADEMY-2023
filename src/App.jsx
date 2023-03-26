@@ -3,12 +3,14 @@ import { useState } from "react";
 import AlertBox from "./AlertBox";
 import { Link } from "react-router-dom";
 
+
+
 export default function App() {
   //Lista de cidades aceitas
   //Elas servem para verificar se a cidade
   //escrita pelo usuário está entre algumas dessas
 
-  const cidadesPossiveis = [
+ const cidadesPossiveis = [
     "ARACAJU",
     "BELEM",
     "BELO HORIZONTE",
@@ -34,6 +36,8 @@ export default function App() {
     "TERESINA",
     "VITORIA",
   ];
+
+ 
   // Lista de todas as possibilidades de escolhe da modalidade do usuário
   // esse array foi declarado pois caso haja necessidade futura na hablicação
   // dos tipos de Caminhao, só precisaremos alterar aqui e nao em todas as ocor-
@@ -186,3 +190,5 @@ export default function App() {
     </div>
   );
 }
+
+
