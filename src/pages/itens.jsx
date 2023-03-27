@@ -325,7 +325,7 @@ export default function Itens() {
       qntPorteGrande + qntPorteMedio + qntPortePequeno
     }, o número total e itens trasportados é de ${quantidadeDeItens}, o custo médio por km é de ${(custoTotal / distanciaTotal).toFixed(2)}, o custo para veículos da modalidade pequena foi de ${custoModalidadePequena} reais, para a modalidade média ${custoModalidadeMedia} e o custo para a modalidade grande foi e ${custoModalidadeGrande}, ${
       boolean
-        ? `o preco da ${cidade_inicial} para a ${cidade_parada.toUpperCase()} foi de R$ ${custoIniParada} e o custo de ${cidade_parada.toUpperCase()} para ${cidade_dest.toUpperCase()} foi de R$ ${custoParadaDestino} `
+        ? `o preco da ${cidade_inicial.toUpperCase()} para a ${cidade_parada.toUpperCase()} foi de R$ ${custoIniParada} e o custo de ${cidade_parada.toUpperCase()} para ${cidade_dest.toUpperCase()} foi de R$ ${custoParadaDestino} `
         : null
     }`;
 
