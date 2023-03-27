@@ -148,7 +148,7 @@ export default function Itens() {
       alert("Cidade de partida não existe ou não condiz com a norma");
     } else if (
       !cidadesPossiveis.includes(cidade_parada.toUpperCase()) &&
-      cidade_parada != ""
+      cidade_parada !== ""
     ) {
       alert("Cidade de parada não existe ou não condiz com a norma");
     } else if (!cidadesPossiveis.includes(cidade_dest.toUpperCase())) {
@@ -203,6 +203,7 @@ export default function Itens() {
         if (info[`${cidade_parada.toUpperCase()}`] === 0) {
           distanciaPDest = info[`${cidade_dest.toUpperCase()}`];
         }
+        
       });
 
       // soma as duas
@@ -270,7 +271,7 @@ export default function Itens() {
   // Função que recebe uma lista com todos os peso dos itens selecionados
   // e seta o pesoTotal (soma de todos os pesos) * qntDeCada1 na variavel acima declarada
   function MaxWeight(weightList, itensList) {
-    let i;
+ 
     pesoTotal = 0;
 
     itensList.map((item, index) => {
