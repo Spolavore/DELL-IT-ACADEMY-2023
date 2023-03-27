@@ -328,7 +328,6 @@ export default function Itens() {
     para ${cidade_dest.toUpperCase()} foi de ${custoParadaDestino} ` : null}`
 
     res.push( templateText);
-    alert(res)
     return(<>
       <Estatistic lista = {res}></Estatistic>
     </>)
