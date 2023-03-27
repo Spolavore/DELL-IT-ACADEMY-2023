@@ -1,6 +1,5 @@
-
+// Funcao responsável por colocar as estatisticas na tela
 import styles from './style.module.css'
-
 export default function Estatistic({content}) {
     console.log(content)
     return(
