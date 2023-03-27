@@ -54,9 +54,7 @@ export default function Itens() {
   // eh setada apos a verificacao
   let listaProdutos = [];
 
-  // Lista que contem cada transporte  cadastrado até agora
-  let transportesCadastrados = [];
-
+ 
   // Variaveis e useStates referentes as cidades do percurso total
   let [cidade_inicial, setCidadeInicial] = useState("");
   let [cidade_parada, setCidadeParada] = useState("");
@@ -64,8 +62,10 @@ export default function Itens() {
   let pesoTotal = 0;
 
   // Variavel e useState referente ao outPut, quando tudo for calculado
-  // ele ira ser setado
+  // ele ira ser setado e as estatisticas da funcionalidade 3 do programa
   let [outPut, setOutput] = useState(<></>);
+  let [estatistic, setEstatic] = useState(<></>)
+  let [estatisticData, setEstaticData] = useState([]) // responsavel por guardar o  cada cadastro
 
   // Variaveis referente as distancias entre as cidades
   let distanciaIniP; // distancia do inicio ate a parda
@@ -99,7 +99,7 @@ export default function Itens() {
       lavadora,
     ];
 
-    // trecho de codigo que irá arredondar para baixo todas os itens que possuirem 
+    // trecho de codigo que irá arredondar para baixo todas os itens que possuirem
     // casas decimais, isso ocorre para que caso o usuário passe um item de valor
     // "quebrado" o programa considera apenas o menor número inteiro mais proximo
     quantidadeItens.map((e, index) => {
@@ -126,7 +126,8 @@ export default function Itens() {
     // verifica se não há nenhum campo nulo
     if (quantidadeItens.includes("")) {
       alert(
-        `Campo dos itens de número ${quantidadeItens.indexOf("") + 1
+        `Campo dos itens de número ${
+          quantidadeItens.indexOf("") + 1
         } é inválido!`
       );
       alert("Preencha todos os campos antes de enviar as informações");
@@ -141,15 +142,17 @@ export default function Itens() {
     // temos que somar + 1 pois o array começa na posição 0, então o 0 representa o 1 item o 1 o segundo item e etc
     else if (campoNegativo >= 0) {
       alert(
-        `Campos negativos não serão aceitos, revise o campo dos itens de número ${campoNegativo + 1
+        `Campos negativos não serão aceitos, revise o campo dos itens de número ${
+          campoNegativo + 1
         }`
       );
     } else if (campoNegativoPeso >= 0) {
       alert(
-        `Campos negativos não serão aceitos, revise o campo dos pesos de número ${campoNegativoPeso + 1
+        `Campos negativos não serão aceitos, revise o campo dos pesos de número ${
+          campoNegativoPeso + 1
         }`
       );
-    }
+    } 
     // Parte da verificação das cidades passadas, se elas estão contidas
     // nas cidades permitidas, permitiremos que o usuario não coloque cidade de parada
     else if (!cidadesPossiveis.includes(cidade_inicial.toUpperCase())) {
@@ -173,14 +176,14 @@ export default function Itens() {
     }
   }
 
+
   // Função responsável por fazer todos os calculos e após isso setar o output para
   // ser colocado na tela
   function Calculate() {
     CalculateDistance();
     DeterminateBestOption();
     CalculateTaxes();
-    transportesCadastrados = GenerateEstatistic();
- 
+  
     setOutput(
       <InfoBox
         cidade_inicial={cidade_inicial.toUpperCase()}
@@ -196,7 +199,7 @@ export default function Itens() {
         custoParadaDestino={custoParadaDestino}
       />
     );
-
+    setEstaticData( cadastrosAntigos => [...cadastrosAntigos, GenerateEstatistic()]) ;
 
   }
 
@@ -214,7 +217,6 @@ export default function Itens() {
         if (info[`${cidade_parada.toUpperCase()}`] === 0) {
           distanciaPDest = info[`${cidade_dest.toUpperCase()}`];
         }
-        
       });
 
       // soma as duas
@@ -241,27 +243,20 @@ export default function Itens() {
     let pesoTotalAux;
     pesoTotalAux = pesoTotal;
 
-
     // Algoritmo que checa a melhor opção de categoria
     // e quantos irão ser necessários
     while (pesoTotalAux > 0) {
       if (pesoTotalAux / 10000 > 1) {
-
         pesoTotalAux -= 10000;
         qntPorteGrande += 1;
       } else if (pesoTotalAux / 4000 > 1) {
-
-
         pesoTotalAux -= 4000;
         qntPorteMedio += 1;
       } else {
-
-
         pesoTotalAux -= 1000;
         qntPortePequeno += 1;
       }
     }
-
   }
 
   // Função responsável por determinar o custo total, e o custo parcial entre trechos
@@ -282,7 +277,6 @@ export default function Itens() {
   // Função que recebe uma lista com todos os peso dos itens selecionados
   // e seta o pesoTotal (soma de todos os pesos) * qntDeCada1 na variavel acima declarada
   function MaxWeight(weightList, itensList) {
- 
     pesoTotal = 0;
 
     itensList.map((item, index) => {
@@ -308,33 +302,34 @@ export default function Itens() {
     return aux;
   }
 
+  // Função responsável por gerar as estatística da funcionalidade 3 do programa
+  // ela aproveita os dados já calculados por outra funções, adicionado só alguns
+  // a mais e retorna um texto com esses dados
   function GenerateEstatistic() {
+
     let quantidadeDeItens = 0;
-    let res = [];
+
     // trecho do programa que calculo o total de itens
     listaProdutos.map((i) => {
       quantidadeDeItens += parseInt(i);
-    })
+    });
 
     let custoModalidadePequena = qntPortePequeno * precos[0] * distanciaTotal;
     let custoModalidadeMedia = qntPorteMedio * precos[1] * distanciaTotal;
     let custoModalidadeGrande = qntPorteGrande * precos[2] * distanciaTotal;
-
+  
+    // variavel para verificar se há cidade de parada, se houver ela eh igual a true , se nao === a false
     let boolean = cidade_parada !== "";
-    let templateText = `O custo total da viagem foi de ${custoTotal} reais, o número total de veículos transportaos foi de ${qntPorteGrande + qntPorteMedio + qntPortePequeno}, o número total e itens trasportados
-    é de ${quantidadeDeItens}, o custo médio por km é de ${(custoTotal / distanciaTotal).toFixed()}, o custo para
-    veículos da modalidade pequena foi de ${custoModalidadePequena} reais, para a modalidade média ${custoModalidadeMedia}
-    e o custo para a modalidade grande foi e ${custoModalidadeGrande}, 
-    ${boolean ? `o preco da ${cidade_inicial} para a ${cidade_parada.toUpperCase()} foi de ${custoIniParada} e o custo de ${cidade_parada.toUpperCase()}
-    para ${cidade_dest.toUpperCase()} foi de ${custoParadaDestino} ` : null}`
 
-    res.push( templateText);
-    return(<>
-      <Estatistic lista = {res}></Estatistic>
-    </>)
-    return res;
- 
+    let templateText = `O custo total da viagem foi de ${custoTotal} reais, o número total de veículos transportaos foi de ${
+      qntPorteGrande + qntPorteMedio + qntPortePequeno
+    }, o número total e itens trasportados é de ${quantidadeDeItens}, o custo médio por km é de ${(custoTotal / distanciaTotal).toFixed(2)}, o custo para veículos da modalidade pequena foi de ${custoModalidadePequena} reais, para a modalidade média ${custoModalidadeMedia} e o custo para a modalidade grande foi e ${custoModalidadeGrande}, ${
+      boolean
+        ? `o preco da ${cidade_inicial} para a ${cidade_parada.toUpperCase()} foi de R$ ${custoIniParada} e o custo de ${cidade_parada.toUpperCase()} para ${cidade_dest.toUpperCase()} foi de R$ ${custoParadaDestino} `
+        : null
+    }`;
 
+    return templateText;
   }
   // Código da Interface em html e obtenção de dados
   return (
@@ -485,13 +480,15 @@ export default function Itens() {
           <button className={styles.buttonSubmit} onClick={VerifyInputs}>
             Calcular
           </button>
+          <button className={styles.buttonSubmit} onClick={ (event) => {setEstatic(<Estatistic content = {estatisticData}/>)}}>
+            Estatísticas
+          </button>
           <Link className={styles.link} to={"/"}>
             Voltar
           </Link>
         </div>
         {outPut}
-
-        
+        {estatistic}
       </div>
     </>
   );
