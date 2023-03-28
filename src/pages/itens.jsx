@@ -348,7 +348,7 @@ export default function Itens() {
     )}, o custo para veículos da modalidade pequena foi de R$ ${custoModalidadePequena} , para a modalidade média R$ ${custoModalidadeMedia} e o custo para a modalidade grande foi e R$ ${custoModalidadeGrande}, ${
       boolean
         ? `o preco da ${cidade_inicial.toUpperCase()} para a ${cidade_parada.toUpperCase()} foi de R$ ${custoIniParada} e o custo de ${cidade_parada.toUpperCase()} para ${cidade_dest.toUpperCase()} foi de R$ ${custoParadaDestino} `
-        : null
+        : ""
     }`;
 
     return templateText;
