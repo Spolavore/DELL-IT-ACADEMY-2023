@@ -36,15 +36,16 @@ export default function InfoBox({
   for (index in quantidadeDeProdutos){
     somaDosProdutos += parseFloat(quantidadeDeProdutos[index]);
   }
-  console.log(quantidadeDeProdutos)
+
   precoUnitario =  (custoTotal / somaDosProdutos).toFixed(2);
 
   // Trecho de código que irá remover das lista produtosEscolhidos aqueles que não foram
   // escolhidos pelo usuário, ou seja, que foi passado o valor 0
-  while (quantidadeDeProdutos.includes(0) || quantidadeDeProdutos.includes("0")) {
-    let itemNulo = produtosEscolhidos[quantidadeDeProdutos.indexOf("0")];
+  while (quantidadeDeProdutos.includes(0) || quantidadeDeProdutos.includes('0') ) {
+    let itemNulo = produtosEscolhidos[quantidadeDeProdutos.indexOf(0)];
     produtosEscolhidos.splice(produtosEscolhidos.indexOf(itemNulo), 1);
-    quantidadeDeProdutos.splice(quantidadeDeProdutos.indexOf("0"), 1);
+    quantidadeDeProdutos.splice(quantidadeDeProdutos.indexOf(0), 1);
+
  
     
   }

@@ -209,7 +209,7 @@ export default function Itens() {
         GenerateEstatistic(),
       ]);
     } else 
-      alert('Transpore já cadastrado');
+      alert('Transporte já cadastrado');
   }
 
   // Função resposável por calcular as distancias entre as cidades e setar essas
