@@ -18,3 +18,7 @@
 .dataList{
     width: 100%;
 }
+
+.container p {
+    font-size: 1.3rem;
+}
