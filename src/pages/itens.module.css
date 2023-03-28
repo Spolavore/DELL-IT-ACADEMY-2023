@@ -144,3 +144,14 @@
     color: #0076FE 
    
 }
+
+
+@media (max-width: 1300px){
+    .container label, .inputField, .inputField::placeholder{
+        font-size: clamp(0.6rem, 2vw, 3rem);
+    }
+
+    
+
+    
+}
