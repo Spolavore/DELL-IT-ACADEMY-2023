@@ -200,10 +200,16 @@ export default function Itens() {
         custoParadaDestino={custoParadaDestino}
       />
     );
-    setEstaticData((cadastrosAntigos) => [
-      ...cadastrosAntigos,
-      GenerateEstatistic(),
-    ]);
+
+    // codigo que permite apenas transporte nao cadastrados
+    // entrem na lista
+    if(!(estatisticData.includes(GenerateEstatistic()))){
+      setEstaticData((cadastrosAntigos) => [
+        ...cadastrosAntigos,
+        GenerateEstatistic(),
+      ]);
+    } else 
+      alert('Transpore já cadastrado');
   }
 
   // Função resposável por calcular as distancias entre as cidades e setar essas
@@ -333,13 +339,13 @@ export default function Itens() {
     // variavel para verificar se há cidade de parada, se houver ela eh igual a true , se nao === a false
     let boolean = cidade_parada !== "";
 
-    let templateText = `O custo total da viagem foi de ${custoTotal} reais, o número total de veículos transportaos foi de ${
+    let templateText = `O custo total da viagem foi de ${custoTotal} reais, o número total de veículos utilizados foi de ${
       qntPorteGrande + qntPorteMedio + qntPortePequeno
     }, o número total e itens trasportados é de ${quantidadeDeItens}, o custo médio por km é de ${(
       custoTotal / distanciaTotal
     ).toFixed(
       2
-    )}, o custo para veículos da modalidade pequena foi de ${custoModalidadePequena} reais, para a modalidade média ${custoModalidadeMedia} e o custo para a modalidade grande foi e ${custoModalidadeGrande}, ${
+    )}, o custo para veículos da modalidade pequena foi de R$ ${custoModalidadePequena} , para a modalidade média R$ ${custoModalidadeMedia} e o custo para a modalidade grande foi e R$ ${custoModalidadeGrande}, ${
       boolean
         ? `o preco da ${cidade_inicial.toUpperCase()} para a ${cidade_parada.toUpperCase()} foi de R$ ${custoIniParada} e o custo de ${cidade_parada.toUpperCase()} para ${cidade_dest.toUpperCase()} foi de R$ ${custoParadaDestino} `
         : null
